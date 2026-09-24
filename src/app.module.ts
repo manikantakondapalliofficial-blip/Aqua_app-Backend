@@ -13,10 +13,12 @@ import { ChatModule } from './chat/chat.module';
 import { BillsModule } from './modules/bills/bills.module';
 import { CommunityModule } from './modules/community/community.module';
 import { BannersModule } from './modules/banners/banners.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }), // loads .env automatically
+    HealthModule,
     AuthModule,
     TanksModule,
     FeedModule,

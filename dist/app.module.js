@@ -22,6 +22,7 @@ const chat_module_1 = require("./chat/chat.module");
 const bills_module_1 = require("./modules/bills/bills.module");
 const community_module_1 = require("./modules/community/community.module");
 const banners_module_1 = require("./modules/banners/banners.module");
+const health_module_1 = require("./health/health.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,6 +30,7 @@ exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
             config_1.ConfigModule.forRoot({ isGlobal: true }),
+            health_module_1.HealthModule,
             auth_module_1.AuthModule,
             tanks_module_1.TanksModule,
             feed_module_1.FeedModule,
