@@ -4,6 +4,9 @@ import { UpdateInventoryDto } from './dto/update-inventory.dto';
 export declare class InventoryController {
     private readonly inventoryService;
     constructor(inventoryService: InventoryService);
+    getLedger(user: {
+        sub: string;
+    }, inventoryId?: string): Promise<any[]>;
     getAll(user: {
         sub: string;
     }): Promise<any[]>;

@@ -10,6 +10,11 @@ import { UpdateInventoryDto } from './dto/update-inventory.dto';
 export class InventoryController {
   constructor(private readonly inventoryService: InventoryService) {}
 
+  @Get('ledger')
+  getLedger(@CurrentUser() user: { sub: string }, @Body('inventory_id') inventoryId?: string) {
+    return this.inventoryService.getStockLedger(user.sub, inventoryId);
+  }
+
   @Get()
   getAll(@CurrentUser() user: { sub: string }) {
     return this.inventoryService.findAllByUser(user.sub);

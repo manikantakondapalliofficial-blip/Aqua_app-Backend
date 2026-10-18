@@ -21,6 +21,28 @@ let FeedService = class FeedService {
         return data;
     }
     async create(userId, dto) {
+        const targetDate = dto.date.substring(0, 10);
+        const targetSlot = dto.time_slot.toLowerCase().trim();
+        const targetTank = dto.tank_id.toLowerCase().trim();
+        const { data: existingFeeds, error: fetchErr } = await (0, supabase_client_1.getSupabaseClient)()
+            .from('feed')
+            .select('id, time_slot, date, tank_id')
+            .eq('user_id', userId);
+        if (fetchErr) {
+            throw new common_1.InternalServerErrorException(fetchErr.message);
+        }
+        const sameDayAndTank = (existingFeeds || []).filter((f) => {
+            const fDate = (f.date && f.date.length >= 10) ? f.date.substring(0, 10) : f.date;
+            const fTank = (f.tank_id || '').toLowerCase().trim();
+            return fDate === targetDate && fTank === targetTank;
+        });
+        if (sameDayAndTank.length >= 4) {
+            throw new common_1.BadRequestException(`Maximum limit of 4 feed entries per day reached for ${dto.tank_id} on ${targetDate}.`);
+        }
+        const alreadyEntered = sameDayAndTank.some((f) => (f.time_slot || '').toLowerCase().trim() === targetSlot);
+        if (alreadyEntered) {
+            throw new common_1.ConflictException(`Feed for '${dto.time_slot}' has already been submitted for ${dto.tank_id} on ${targetDate}. Duplicate entries are prevented.`);
+        }
         const { data, error } = await (0, supabase_client_1.getSupabaseClient)()
             .from('feed')
             .insert({

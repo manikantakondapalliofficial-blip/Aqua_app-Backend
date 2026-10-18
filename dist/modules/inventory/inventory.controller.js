@@ -23,6 +23,9 @@ let InventoryController = class InventoryController {
     constructor(inventoryService) {
         this.inventoryService = inventoryService;
     }
+    getLedger(user, inventoryId) {
+        return this.inventoryService.getStockLedger(user.sub, inventoryId);
+    }
     getAll(user) {
         return this.inventoryService.findAllByUser(user.sub);
     }
@@ -37,6 +40,14 @@ let InventoryController = class InventoryController {
     }
 };
 exports.InventoryController = InventoryController;
+__decorate([
+    (0, common_1.Get)('ledger'),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, common_1.Body)('inventory_id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, String]),
+    __metadata("design:returntype", void 0)
+], InventoryController.prototype, "getLedger", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, current_user_decorator_1.CurrentUser)()),
